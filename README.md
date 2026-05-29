@@ -72,7 +72,7 @@ The simulation utilizes a multi-terminal launch to decouple the physics engine, 
 ### Terminal 1: Launch the Digital Twin (Physics Engine & Bridge)
 
 ```bash
-ros2 run twin_simulation mujoco_ros_bridge
+ros2 run twin_simulation bridge
 ```
 
 ### Terminal 2: Launch the Autonomous Brain (C++ Node)
@@ -84,9 +84,6 @@ ros2 run twin_control lidar_racer
 ### Terminal 3: Launch Visualization (RViz2)
 
 ```bash
-ros2 run robot_state_publisher robot_state_publisher \
-  --ros-args -p robot_description:="$(cat src/digital-twin-ros2/twin_simulation/urdf/simple_fs_car.urdf)"
-
 rviz2
 ```
 
