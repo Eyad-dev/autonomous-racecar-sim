@@ -55,7 +55,7 @@ The system consists of four interconnected components:
 cd ~/your_workspace/src
 
 # Clone the repository
-git clone https://github.com/yourusername/digital-twin-ros2.git
+git clone https://github.com/Eyad-dev/autonomous-racecar-sim.git
 
 # Build the packages
 cd ~/your_workspace
