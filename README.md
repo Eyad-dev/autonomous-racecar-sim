@@ -2,6 +2,8 @@
 
 A closed-loop, high-performance digital twin simulation bridging mechanical URDF models with autonomous pathfinding. This project runs a custom C++ AI stack against a real-time MuJoCo physics engine.
 
+![alt text](image.png)
+
 ## Project Overview
 
 This repository contains a decoupled autonomous simulation pipeline that:
@@ -55,7 +57,7 @@ The system consists of four interconnected components:
 cd ~/your_workspace/src
 
 # Clone the repository
-git clone https://github.com/yourusername/digital-twin-ros2.git
+git clone https://github.com/Eyad-dev/autonomous-racecar-sim.git
 
 # Build the packages
 cd ~/your_workspace
@@ -72,7 +74,7 @@ The simulation utilizes a multi-terminal launch to decouple the physics engine, 
 ### Terminal 1: Launch the Digital Twin (Physics Engine & Bridge)
 
 ```bash
-ros2 run twin_simulation mujoco_ros_bridge
+ros2 run twin_simulation bridge
 ```
 
 ### Terminal 2: Launch the Autonomous Brain (C++ Node)
@@ -84,9 +86,6 @@ ros2 run twin_control lidar_racer
 ### Terminal 3: Launch Visualization (RViz2)
 
 ```bash
-ros2 run robot_state_publisher robot_state_publisher \
-  --ros-args -p robot_description:="$(cat src/digital-twin-ros2/twin_simulation/urdf/simple_fs_car.urdf)"
-
 rviz2
 ```
 

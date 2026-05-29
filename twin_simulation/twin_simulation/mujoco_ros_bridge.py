@@ -21,7 +21,7 @@ class MuJoCoROSBridge(Node):
 
         # Load the MJCF XML file
         package_share_dir = get_package_share_directory('twin_simulation')
-        mjcf_xml = os.path.join(package_share_dir, 'urdf', 'twin_sim_car.xml')
+        mjcf_xml = os.path.join(package_share_dir, 'urdf', 'sim_car_mjcf.xml')
 
         self.model = mujoco.MjModel.from_xml_path(mjcf_xml)
         self.data = mujoco.MjData(self.model)
