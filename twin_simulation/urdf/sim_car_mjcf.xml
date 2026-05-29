@@ -1,0 +1,69 @@
+<mujoco>
+    <compiler angle="radian"/>
+    <option timestep="0.005" gravity="0 0 -9.81"/>
+    
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="512"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+        <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+    </asset>
+
+    <worldbody>
+        <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="0 0 5" dir="0 0 -1"/>
+        <geom name="floor" type="plane" pos="10 15 0" size="50 50 0.1" material="matplane" friction="1.0 0.005 0.0001"/>
+
+        <geom name="out_south" type="box" pos="10 -5 0.5" size="25 0.5 0.5" rgba="0.8 0.2 0.2 1"/>
+        <geom name="out_north" type="box" pos="10 35 0.5" size="25 0.5 0.5" rgba="0.8 0.2 0.2 1"/>
+        <geom name="out_west" type="box" pos="-15 15 0.5" size="0.5 20 0.5" rgba="0.8 0.2 0.2 1"/>
+        <geom name="out_east" type="box" pos="35 15 0.5" size="0.5 20 0.5" rgba="0.8 0.2 0.2 1"/>
+
+        <geom name="in_south" type="box" pos="10 5 0.5" size="15 0.5 0.5" rgba="0.2 0.4 0.8 1"/>
+        <geom name="in_north" type="box" pos="10 25 0.5" size="15 0.5 0.5" rgba="0.2 0.4 0.8 1"/>
+        <geom name="in_west" type="box" pos="-5 15 0.5" size="0.5 10 0.5" rgba="0.2 0.4 0.8 1"/>
+        <geom name="in_east" type="box" pos="25 15 0.5" size="0.5 10 0.5" rgba="0.2 0.4 0.8 1"/>
+        
+        <geom name="debris_1" type="box" pos="5 32 0.5" size="1.5 1.5 0.5" rgba="0.8 0.8 0.1 1"/>
+
+        <body name="base_link" pos="0 0 0.3">
+            <freejoint/> 
+            <geom type="box" size="0.75 0.2 0.1" rgba="0 0 0.8 1" mass="200"/>
+
+            <camera name="main_camera" pos="0 0 1" euler="1.6 4.7 0"/>
+
+            <site name="lidar_mount" pos="0 0 0.4" size="0.05" rgba="1 0 0 1"/>
+
+            <body name="rl_wheel" pos="-0.6 0.45 0">
+                <joint name="rl_wheel_joint" type="hinge" axis="0 1 0" damping="0.05"/>
+                <geom type="cylinder" size="0.23 0.1" rgba="0.1 0.1 0.1 1" mass="5" euler="1.5708 0 0" friction="1.5 0.01 0.001"/>
+            </body>
+            
+            <body name="rr_wheel" pos="-0.6 -0.45 0">
+                <joint name="rr_wheel_joint" type="hinge" axis="0 1 0" damping="0.05"/>
+                <geom type="cylinder" size="0.23 0.1" rgba="0.1 0.1 0.1 1" mass="5" euler="1.5708 0 0" friction="1.5 0.01 0.001"/>
+            </body>
+            
+            <body name="fl_steer_hinge" pos="0.6 0.45 0">
+                <joint name="fl_steer_joint" type="hinge" axis="0 0 1" range="-0.75 0.75" damping="0.5"/>
+                <geom type="box" size="0.01 0.01 0.01" mass="1" rgba="0 0 0 0"/>
+                
+                <body name="fl_wheel" pos="0 0 0">
+                    <joint name="fl_wheel_joint" type="hinge" axis="0 1 0" damping="0.05"/>
+                    <geom type="cylinder" size="0.23 0.1" rgba="0.1 0.1 0.1 1" mass="5" euler="1.5708 0 0" friction="1.5 0.01 0.001"/>
+                </body>
+            </body>
+            
+            <body name="fr_steer_hinge" pos="0.6 -0.45 0">
+                <joint name="fr_steer_joint" type="hinge" axis="0 0 1" range="-0.75 0.75" damping="0.5"/>
+                <geom type="box" size="0.01 0.01 0.01" mass="1" rgba="0 0 0 0"/>
+                
+                <body name="fr_wheel" pos="0 0 0">
+                    <joint name="fr_wheel_joint" type="hinge" axis="0 1 0" damping="0.05"/>
+                    <geom type="cylinder" size="0.23 0.1" rgba="0.1 0.1 0.1 1" mass="5" euler="1.5708 0 0" friction="1.5 0.01 0.001"/>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+    <sensor>
+        <rangefinder name="lidar" site="lidar_mount"/>
+    </sensor>
+</mujoco>

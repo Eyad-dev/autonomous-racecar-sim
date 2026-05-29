@@ -1,0 +1,18 @@
+
+# ROS 2 & COLCON WORKSPACE
+build/
+install/
+log/
+*/build/
+*/install/
+*/log/
+
+# 🐍 PYTHON
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# 💻 IDEs & TEXT EDITORS
+.vscode/
+.idea/
