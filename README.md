@@ -1,59 +1,61 @@
-digital-twin-ros2 🏎️
-A closed-loop, high-performance digital twin simulation. This project bridges the gap between mechanical URDF models and autonomous pathfinding by running a custom C++ AI stack against a real-time MuJoCo physics engine.
+# 🏎️ Digital Twin ROS2
 
---- Project Overview ---
-This repository contains a decoupled autonomous simulation pipeline. It utilizes a custom Python bridge to translate a static chassis URDF into dynamic MuJoCo MJCF for high-fidelity physics (tire friction, torque vectoring), while simultaneously streaming simulated 360-degree LiDAR and Odometry data to a C++ navigation node via ROS 2.
+A closed-loop, high-performance digital twin simulation bridging mechanical URDF models with autonomous pathfinding. This project runs a custom C++ AI stack against a real-time MuJoCo physics engine.
 
-Core Features
-Custom ROS 2/MuJoCo Bridge: Real-time translation of /cmd_vel to independent wheel torques.
+## Project Overview
 
-Simulated Perception: Custom 360-degree LiDAR raycasting with hardware limitations and blind-spot modeling.
+This repository contains a decoupled autonomous simulation pipeline that:
+- Translates a static chassis URDF into dynamic MuJoCo MJCF for high-fidelity physics (tire friction, torque vectoring)
+- Streams simulated 360-degree LiDAR and Odometry data to a C++ navigation node via ROS 2
+- Executes autonomous decision-making in real-time
 
-C++ Autonomous Brain: * Proportional-Integral-Derivative (PID) steering controller.
+## Core Features
 
-Configuration Space (C-Space) dynamic obstacle inflation to account for chassis width.
+- **Custom ROS 2/MuJoCo Bridge**: Real-time translation of `/cmd_vel` to independent wheel torques
+- **Simulated Perception**: 360-degree LiDAR raycasting with hardware limitations and blind-spot modeling
+- **C++ Autonomous Brain**:
+  - Proportional-Integral-Derivative (PID) steering controller
+  - Configuration Space (C-Space) dynamic obstacle inflation for chassis width
+  - Reactive proximity forcefields for emergency collision avoidance
+- **Parallel Visualization**: RViz2 integration with dynamic TF broadcasting for real-time RobotModel and LaserScan mapping
 
-Reactive proximity forcefields for emergency collision avoidance.
+## Development Environment
 
-Parallel Visualization: RViz2 integration with dynamic TF broadcasting for real-time RobotModel and LaserScan mapping.
+### Hardware Specifications
+- **CPU**: Intel i7-11850H
+- **GPU**: NVIDIA RTX 3070 Mobile
+- **RAM**: 32GB
 
-💻 Development Environment
-This stack was developed and tested on the following hardware and software configuration:
+### Software Stack
+- **Operating System**: Ubuntu Linux 22.04 LTS
+- **Middleware**: ROS 2
+- **Physics Engine**: MuJoCo
+- **Languages**:
+  - C++ (Pathfinding & Control Node)
+  - Python (Bridge & Procedural Track Generation)
 
-Hardware Specifications
-CPU: i7-11850H
-GPU: RTX 3070 mobile
-RAM: 32GB RAM 
+## 🏗️ System Architecture
 
-Software Stack
-Operating System: Ubuntu Linux 22.04 LTS
+The system consists of four interconnected components:
 
-Middleware: ROS 2
+1. **URDF**: Physical dimensions and sensor transforms of the car
+2. **MuJoCo**: Calculates high-speed tire friction, collisions, and raycasting
+3. **ROS 2**: Streams Odometry and LaserScan data; receives Twist velocity commands
+4. **C++**: Calculates gaps, inflates obstacles, computes PID error, and commands steering angle
 
-Physics Engine: MuJoCo
+## 🛠️ Installation & Build
 
-Languages: * C++ (Pathfinding & Control Node)
+### Prerequisites
+- ROS 2 environment sourced and configured
 
-Standard Python (Native Linux installation, Bridge & Procedural Track Generation)
+### Setup Instructions
 
-🏗️ System Architecture
-The Blueprint (URDF): The physical dimensions and sensor transforms of the car.
-
-The Physics (MuJoCo): Processes the MJCF translation to calculate high-speed tire friction, collisions, and raycasting.
-
-The Middleware (ROS 2): Passes Odometry and LaserScan data out, and receives Twist velocity commands in.
-
-The Brain (C++): Calculates gaps, inflates obstacles, calculates PID error, and commands the steering angle.
-
-🛠️ Installation & Build
-Ensure your ROS 2 environment is sourced, then clone and build the workspace:
-
-Bash
+```bash
 # Navigate to your workspace
 cd ~/your_workspace/src
 
-# Clone the repository (Replace with your actual repo link)
-git clone https://github.com/yourusername/fs-digital-twin-ros2.git
+# Clone the repository
+git clone https://github.com/yourusername/digital-twin-ros2.git
 
 # Build the packages
 cd ~/your_workspace
@@ -61,23 +63,45 @@ colcon build --packages-select twin_simulation twin_control
 
 # Source the newly built workspace
 source install/setup.bash
-🏁 Usage
-The simulation utilizes a multi-terminal launch to decouple the physics engine, the visualization, and the autonomous brain.
+```
 
-1. Launch the Digital Twin (Physics Engine & Bridge)
+## 🏁 Usage
 
-Bash
+The simulation utilizes a multi-terminal launch to decouple the physics engine, visualization, and autonomous brain.
+
+### Terminal 1: Launch the Digital Twin (Physics Engine & Bridge)
+
+```bash
 ros2 run twin_simulation mujoco_ros_bridge
-2. Launch the Autonomous Brain (C++ Node)
+```
 
-Bash
+### Terminal 2: Launch the Autonomous Brain (C++ Node)
+
+```bash
 ros2 run twin_control lidar_racer
-3. Launch the Visualization (RViz2)
+```
 
-Bash
-ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(cat src/fs-digital-twin-ros2/twin_simulation/urdf/simple_fs_car.urdf)"
+### Terminal 3: Launch Visualization (RViz2)
+
+```bash
+ros2 run robot_state_publisher robot_state_publisher \
+  --ros-args -p robot_description:="$(cat src/digital-twin-ros2/twin_simulation/urdf/simple_fs_car.urdf)"
+
 rviz2
-(Configure RViz2 to display the RobotModel, /scan, and /odom on the world fixed frame).
+```
 
-👨‍💻 Author
-Eyad Ahmed Habib Computer Engineering Student, Ain Shams University (ASU)
+**RViz2 Configuration**: Configure RViz2 to display:
+- RobotModel
+- `/scan` (LaserScan)
+- `/odom` (Odometry)
+- Use **world** as the fixed frame
+
+## 👨‍💻 Author
+
+**Eyad Ahmed Habib**  
+Computer Engineering Student  
+Ain Shams University (ASU)
+
+---
+
+*Last Updated: 29-5-2026*
